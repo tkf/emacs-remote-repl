@@ -17,7 +17,11 @@ class RemoteREPLClient(Cmd):
         self.client = EPCClient(address)
 
     def default(self, line):
-        self.stdout.write(self.client.call_sync('eval', [line]))
+        try:
+            reply = str(self.client.call_sync('eval', [line]))
+        except Exception as err:
+            reply = str(err)
+        self.stdout.write(reply)
         self.stdout.write("\n")
 
 
