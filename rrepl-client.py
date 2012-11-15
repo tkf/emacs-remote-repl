@@ -4,15 +4,27 @@
 Remote REPL client.
 """
 
+from cmd import Cmd
+
 from epc.client import EPCClient
 
 
-def run_remote_repl(address, port):
-    client = EPCClient((address, port))
+class RemoteREPLClient(Cmd):
 
-    while True:
-        string = raw_input('rrepl> ')
-        print client.call_sync('eval', [string])
+    prompt = 'rrepl> '
+
+    def connect(self, address):
+        self.client = EPCClient(address)
+
+    def default(self, line):
+        self.stdout.write(self.client.call_sync('eval', [line]))
+        self.stdout.write("\n")
+
+
+def run_remote_repl(address, port):
+    repl = RemoteREPLClient()
+    repl.connect((address, port))
+    repl.cmdloop()
 
 
 def main(args=None):
