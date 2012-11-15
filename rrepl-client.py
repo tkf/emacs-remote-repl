@@ -24,6 +24,9 @@ class RemoteREPLClient(Cmd):
         self.stdout.write(reply)
         self.stdout.write("\n")
 
+    def do_EOF(self, line):
+        return True
+
 
 def run_remote_repl(address, port):
     repl = RemoteREPLClient()
