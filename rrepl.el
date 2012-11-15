@@ -32,6 +32,7 @@
 (defun rrepl-eval-string (string)
   (eval (read string)))
 
+;;;###autoload
 (defun rrepl-server-start (port)
   (epcs:server-start
    (lambda (mngr)
