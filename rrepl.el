@@ -34,6 +34,9 @@
 
 ;;;###autoload
 (defun rrepl-server-start (port)
+  (interactive
+   (list (string-to-number
+          (read-string "Start remote REPL server at port: "))))
   (epcs:server-start
    (lambda (mngr)
      (lexical-let ((mngr mngr))
