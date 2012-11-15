@@ -31,7 +31,12 @@ class RemoteREPLClient(Cmd):
 def run_remote_repl(address, port):
     repl = RemoteREPLClient()
     repl.connect((address, port))
-    repl.cmdloop()
+    try:
+        repl.cmdloop()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        repl.client.close()
 
 
 def main(args=None):
