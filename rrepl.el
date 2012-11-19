@@ -32,16 +32,21 @@
 (defun rrepl-eval-string (string)
   (eval (read string)))
 
+(defvar rrepl-process nil)
+
 ;;;###autoload
 (defun rrepl-server-start (port)
   (interactive
    (list (string-to-number
           (read-string "Start remote REPL server at port: "))))
-  (epcs:server-start
-   (lambda (mngr)
-     (lexical-let ((mngr mngr))
-       (epc:define-method mngr 'eval 'rrepl-eval-string)))
-   port))
+  (unless rrepl-process
+    (setq rrepl-process
+          (epcs:server-start
+           (lambda (mngr)
+             (lexical-let ((mngr mngr))
+               (epc:define-method mngr 'eval 'rrepl-eval-string)))
+           port))
+    (set-process-query-on-exit-flag rrepl-process nil)))
 
 (provide 'rrepl)
 
