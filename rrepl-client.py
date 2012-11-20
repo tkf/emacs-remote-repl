@@ -18,7 +18,7 @@ class RemoteREPLClient(Cmd):
 
     def default(self, line):
         try:
-            reply = str(self.client.call_sync('eval', [line]))
+            reply = str(self.client.call_sync('eval', [line], timeout=10))
         except Exception as err:
             reply = str(err)
         self.stdout.write(reply)
